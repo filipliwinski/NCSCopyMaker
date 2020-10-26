@@ -1,2 +1,2 @@
-# NCSCopyMaker-
-PowerShell script that generates differences in GIT repositories
+# NCSCopyMaker
+PowerShell script that generates code differences in GIT repositories.
