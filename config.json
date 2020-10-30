@@ -1,5 +1,6 @@
 {
   "author": "username",
+  "outputDirectory": "",
   "backInTimeInWeeks": 0,
   "deadlines": [
     "23-10-2020",
