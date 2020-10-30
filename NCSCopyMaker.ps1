@@ -20,7 +20,7 @@ $pastDeadlines = [ordered]@{}
 
 foreach ($deadline in $config.deadlines) {
   $date = [datetime]::parseexact($deadline, 'dd-MM-yyyy', $null)
-  $difference = NEW-TIMESPAN –Start $date –End $currentDate
+  $difference = NEW-TIMESPAN -Start $date -End $currentDate
   
   if ($date -lt $currentDate.AddDays(-1)) {
     $pastDeadlines.Add($difference.Days, $date)
@@ -66,7 +66,17 @@ $cultureInfo = [System.Globalization.CultureInfo]::CurrentCulture
 $weekNumber = $cultureInfo.Calendar.GetWeekOfYear($endDate,$cultureInfo.DateTimeFormat.CalendarWeekRule, $cultureInfo.DateTimeFormat.FirstDayOfWeek)
 Write-Host "Week number: $weekNumber"
 
-$outputPath = "$basePath\$($currentDate.Year).$($startDate.Month)"
+# Set current billing month based on past deadline
+$billingMonth = $startDate.Month
+if ($currentDate -gt $($pastDeadlines.Values)[0]) {
+  $billingMonth = $startDate.AddMonths(1).Month
+}
+
+# Set and create output path
+$outputPath = "$basePath\copyrights\$($currentDate.Year).$($billingMonth)"
+if ($config.$outputDirectory) {
+  $outputPath = $outputDirectory
+}
 New-Item -ItemType Directory -Force -Path $outputPath | Out-Null
 
 # Get diff for each repository

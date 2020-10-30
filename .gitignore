@@ -1,0 +1,7 @@
+*
+
+!.gitignore
+!NCSCopyMaker.ps1
+!NCSCopyMaker.xml
+!README.md
+!LICENSE
