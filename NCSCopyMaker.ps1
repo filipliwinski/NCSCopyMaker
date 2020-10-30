@@ -52,8 +52,8 @@ if ($($futureDeadlines.Values)[0] -lt $sunday) {
   $endDate = $sunday
 }
 
-$startDate = $startDate.AddDays(-(7 * $config.backInTimeInWeeks))
-$endDate = $endDate.AddDays(-(7 * $config.backInTimeInWeeks))
+$startDate = $startDate.Date.AddDays(-(7 * $config.backInTimeInWeeks))
+$endDate = $endDate.Date.AddDays(-(7 * $config.backInTimeInWeeks))
 
 $startDateString = $startDate.AddDays(-1).Date.ToString("yyyy-MM-dd")
 $endDateString = $endDate.Date.ToString("yyyy-MM-dd")
