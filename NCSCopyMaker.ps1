@@ -13,7 +13,7 @@ if ($basePath -eq '') {
 }
 
 $config = Get-Content -Path "$basePath\config.json" | ConvertFrom-Json
-$currentDate = Get-Date
+$currentDate = $(Get-Date).Date.AddDays( - (7 * $config.backInTimeInWeeks))
 
 $futureDeadlines = [ordered]@{}
 $pastDeadlines = [ordered]@{}
@@ -24,7 +24,8 @@ foreach ($deadline in $config.deadlines) {
   
   if ($date -lt $currentDate.AddDays(-1)) {
     $pastDeadlines.Add($difference.Days, $date)
-  } else {
+  }
+  else {
     $futureDeadlines.Add(-$difference.Days, $date)
   }
 }
@@ -35,27 +36,31 @@ if ($dayOfWeek -eq 0) {
   $dayOfWeek = 7
 }
 
-$monday = $currentDate.AddDays(-($dayOfWeek - 1))
+$monday = $currentDate.AddDays( - ($dayOfWeek - 1))
 
-if ($($pastDeadlines.Values)[0] -gt $monday) {
-  $startDate = $($($pastDeadlines.Values)[0]).AddDays(1)
-} else {
+if ($($pastDeadlines.Values)[$pastDeadlines.Count - 1] -gt $monday) {
+  $startDate = $($($pastDeadlines.Values)[$pastDeadlines.Count - 1]).AddDays(1)
+}
+else {
   $startDate = $monday
 }
 
 # Find end day (future deadline or Sunday)
-$sunday = $currentDate.AddDays(-($dayOfWeek - 7))
+$sunday = $currentDate.AddDays( - ($dayOfWeek - 7))
 
 if ($($futureDeadlines.Values)[0] -lt $sunday) {
   $endDate = $($futureDeadlines.Values)[0]
-} else {
+}
+else {
   $endDate = $sunday
 }
 
-$startDate = $startDate.Date.AddDays(-(7 * $config.backInTimeInWeeks))
-$endDate = $endDate.Date.AddDays(-(7 * $config.backInTimeInWeeks))
+#$startDate = $startDate.Date.AddDays(-(7 * $config.backInTimeInWeeks))
+#$endDate = $endDate.Date.AddDays(-(7 * $config.backInTimeInWeeks))
 
-$startDateString = $startDate.AddDays(-1).Date.ToString("yyyy-MM-dd")
+$diffStartDateString = $startDate.AddDays(-1).Date.ToString("yyyy-MM-dd") # Git start date is one day after specified date
+$diffEndDateString = $endDate.Date.ToString("yyyy-MM-dd")
+$startDateString = $startDate.Date.ToString("yyyy-MM-dd")
 $endDateString = $endDate.Date.ToString("yyyy-MM-dd")
 
 Write-Host "After: $startDate"
@@ -63,17 +68,17 @@ Write-Host "Before: $endDate"
 
 # Get week number
 $cultureInfo = [System.Globalization.CultureInfo]::CurrentCulture
-$weekNumber = $cultureInfo.Calendar.GetWeekOfYear($endDate,$cultureInfo.DateTimeFormat.CalendarWeekRule, $cultureInfo.DateTimeFormat.FirstDayOfWeek)
+$weekNumber = $cultureInfo.Calendar.GetWeekOfYear($endDate, $cultureInfo.DateTimeFormat.CalendarWeekRule, $cultureInfo.DateTimeFormat.FirstDayOfWeek)
 Write-Host "Week number: $weekNumber"
 
-# Set current billing month based on past deadline
+# Set billing month based on past deadline
 $billingMonth = $startDate.Month
-if ($currentDate -gt $($pastDeadlines.Values)[0]) {
+if ($currentDate -gt $($pastDeadlines.Values)[0] -and $currentDate.Month -lt $($futureDeadlines.Values)[0].Month) {
   $billingMonth = $startDate.AddMonths(1).Month
 }
 
 # Set and create output path
-$outputPath = "$basePath\copyrights\$($currentDate.Year).$($billingMonth)"
+$outputPath = "$basePath\diffs\$($currentDate.Year).$($billingMonth)"
 if ($config.$outputDirectory) {
   $outputPath = $outputDirectory
 }
@@ -81,12 +86,17 @@ New-Item -ItemType Directory -Force -Path $outputPath | Out-Null
 
 # Get diff for each repository
 foreach ($repository in $config.repositories) {
-  $diff = git -C $repository.location log -p --all --author="$($config.author)" --after=$startDateString --before=$endDateString --full-diff
+  $diff = git -C $repository.location log -p --all --author="$($config.author)" --after=$diffStartDateString --before=$diffEndDateString --full-diff
 
   if ($null -ne $diff) {
-    Write-Host $repository.name
+    Write-Host "Generating diffs for $startDateString - $endDateString in $($repository.name)..."
     $diffOutputPath = "$outputPath\$($repository.name)"
     New-Item -ItemType Directory -Force -Path $diffOutputPath | Out-Null
-    $diff > "$diffOutputPath\week-$weekNumber.txt"
+    $outputFile = "$diffOutputPath\week-$weekNumber.txt"
+    $diff > $outputFile
+    Write-Host "Saved to: $outputFile"
+  }
+  else {
+    Write-Host "No diffs for $startDateString - $endDateString in $($repository.name)..."
   }
 }
