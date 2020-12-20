@@ -1,6 +1,6 @@
 # NCSCopyMaker
 
-PowerShell script that generates code differences in Git repositories for specified deadlines (week by week).
+PowerShell script that generates code differences in Git repositories for specified deadlines (week by week). For now the current week is controlled by the property `backInTimeInWeeks` in the script configuration file. If you need to generate diffs for the past weeks, increase the value of this property.
 
 ## Script configuration
 
@@ -9,6 +9,7 @@ This script requires a configuration JSON file to be present in the same directo
 ```json
 {
   "author": "username",
+  "compress": true,
   "outputDirectory": "",
   "backInTimeInWeeks": 0,
   "deadlines": [
@@ -32,9 +33,10 @@ This script requires a configuration JSON file to be present in the same directo
 
 ### Configuration object
 
-| **Property**       | **Type** | **Description**                               |
+| **Property**       | **Type** | **Description**                              |
 |-------------------|----------|-----------------------------------------------|
 | author            | string   | Name of the autor assigned in Git config.     |
+| compress          | bool     | If `true`, the folder containing diffs will be saved as zip archive. |
 | outputDirectory   | string   | Path to the directory for storing code differences. |
 | backInTimeInWeeks | int      | Positive number of weeks back for which you want to run the script. Default is 0 (the current week). |
 | deadlines         | array    | Array of dates defining the deadlines in each month in `dd-MM-yyyy` format. |
@@ -49,4 +51,8 @@ This script requires a configuration JSON file to be present in the same directo
 
 ## How to run
 
-Just create a proper `config.json` configuration file and run the script in the PowerShell console. The code differences will be saved for each month in a separate folder called MM.yyyy, e.g. `12.2020` for December 2020. In each of the folders you will find folders for repositories defined in the configuration file and inside you will find a text files with the differences for each week, e.g. `week-48.txt`.
+Just create a proper `config.json` configuration file and run the script in the PowerShell console. 
+
+The code differences will be saved for each month in a separate folder called MM.yyyy, e.g. `12.2020` for December 2020. In each of the folders, you will find folders for repositories defined in the configuration file and inside you will find text files with the differences for each week, e.g. `week-48.txt`.
+
+If the `compress` property is set to `true`, the content of the folder for the monthly diffs will be compressed into a zip archive.

@@ -78,7 +78,8 @@ if ($currentDate -gt $($pastDeadlines.Values)[0] -and $currentDate.Month -lt $($
 }
 
 # Set and create output path
-$outputPath = "$basePath\diffs\$($currentDate.Year).$($billingMonth)"
+$folderName = "$($currentDate.Year).$($billingMonth)"
+$outputPath = "$basePath\diffs\$folderName"
 if ($config.$outputDirectory) {
   $outputPath = $outputDirectory
 }
@@ -99,4 +100,9 @@ foreach ($repository in $config.repositories) {
   else {
     Write-Host "No diffs for $startDateString - $endDateString in $($repository.name)..."
   }
+}
+
+if ($config.compress) {
+  Compress-Archive -Path "$basePath\diffs\$folderName" -DestinationPath "$basePath\diffs\$folderName.zip" -Force
+  Write-Host "Compressed to: $folderName.zip"
 }
