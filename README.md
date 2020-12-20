@@ -37,7 +37,7 @@ This script requires a configuration JSON file to be present in the same directo
 |-------------------|----------|-----------------------------------------------|
 | author            | string   | Name of the autor assigned in Git config.     |
 | compress          | bool     | If `true`, the folder containing diffs will be saved as zip archive. |
-| outputDirectory   | string   | Path to the directory for storing code differences. |
+| outputDirectory   | string   | Path to the directory for storing code differences. If no directory is specified, the script directory will be used. |
 | backInTimeInWeeks | int      | Positive number of weeks back for which you want to run the script. Default is 0 (the current week). |
 | deadlines         | array    | Array of dates defining the deadlines in each month in `dd-MM-yyyy` format. |
 | repositories      | array    | Array of objects defining the repositories to track. |
