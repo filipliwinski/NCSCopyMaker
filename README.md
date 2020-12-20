@@ -1,6 +1,6 @@
 # NCSCopyMaker
 
-PowerShell script that generates code differences in Git repositories for specified deadlines (week by week). For now the current week is controlled by the property `backInTimeInWeeks` in the script configuration file. If you need to generate diffs for the past weeks, increase the value of this property.
+PowerShell script that generates code differences in Git repositories for specified deadlines (week by week). For now the current week is controlled by the property `backInTimeInWeeks` in the script configuration file. If you need to generate diffs for the past weeks, increase the value of this property. The code differences will be saved in the `diffs` folder or in the directory defined in the script configuration file.
 
 ## Script configuration
 
