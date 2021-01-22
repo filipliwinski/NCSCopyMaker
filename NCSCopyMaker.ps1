@@ -1,4 +1,4 @@
-# Filip Liwiński (c) 2020
+# Filip Liwiński (c) 2021
 # https://github.com/filipliwinski/NCSCopyMaker
 
 # For debugging purposes, assign the base path in the PS Console:
@@ -38,7 +38,7 @@ if ($dayOfWeek -eq 0) {
 
 $monday = $currentDate.AddDays( - ($dayOfWeek - 1))
 
-if ($($pastDeadlines.Values)[$pastDeadlines.Count - 1] -gt $monday) {
+if ($($pastDeadlines.Values)[$pastDeadlines.Count - 1] -eq $monday) {
   $startDate = $($($pastDeadlines.Values)[$pastDeadlines.Count - 1]).AddDays(1)
 }
 else {
@@ -64,21 +64,24 @@ $startDateString = $startDate.Date.ToString("yyyy-MM-dd")
 $endDateString = $endDate.Date.ToString("yyyy-MM-dd")
 
 Write-Host "After: $startDate"
-Write-Host "Before: $endDate"
+Write-Host "Before: $($endDate.AddDays(1))"
 
 # Get week number
 $cultureInfo = [System.Globalization.CultureInfo]::CurrentCulture
 $weekNumber = $cultureInfo.Calendar.GetWeekOfYear($endDate, $cultureInfo.DateTimeFormat.CalendarWeekRule, $cultureInfo.DateTimeFormat.FirstDayOfWeek)
 Write-Host "Week number: $weekNumber"
 
-# Set billing month based on past deadline
-$billingMonth = $startDate.Month
-if ($currentDate -gt $($pastDeadlines.Values)[0] -and $currentDate.Month -lt $($futureDeadlines.Values)[0].Month) {
-  $billingMonth = $startDate.AddMonths(1).Month
-}
+# # Set billing month based on past deadline
+# $billingMonth = $startDate.Month
+# if ($currentDate -gt $($pastDeadlines.Values)[0] -and $currentDate.Month -lt $($futureDeadlines.Values)[0].Month) {
+#   $billingMonth = $startDate.AddMonths(1).Month
+# }
+
+# Set billing month based on future deadline
+$billingMonth = $($futureDeadlines.Values)[0].Month
 
 # Set and create output path
-$folderName = "$($currentDate.Year).$($billingMonth)"
+$folderName = "$((Get-Date).Year).$($billingMonth)"
 $outputPath = "$basePath\diffs\$folderName"
 if ($config.$outputDirectory) {
   $outputPath = $outputDirectory
