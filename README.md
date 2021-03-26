@@ -56,3 +56,7 @@ Just create a proper `config.json` configuration file and run the script in the 
 The code differences will be saved for each month in a separate folder called MM.yyyy, e.g. `12.2020` for December 2020. In each of the folders, you will find folders for repositories defined in the configuration file and inside you will find text files with the differences for each week, e.g. `week-48.txt`.
 
 If the `compress` property is set to `true`, the content of the folder for the monthly diffs will be compressed into a zip archive.
+
+### Comming soon
+
+- Excluding commits
