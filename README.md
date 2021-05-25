@@ -6,7 +6,7 @@ PowerShell script that generates code differences in Git repositories for specif
 
 This script requires a configuration JSON file to be present in the same directory as the script with the name `config.json`. The schema for this file is provided below with the description of all its properties.
 
-```json
+```jsonc
 {
   "author": "username",
   "compress": true,
