@@ -88,8 +88,22 @@ if ($config.$outputDirectory) {
 }
 New-Item -ItemType Directory -Force -Path $outputPath | Out-Null
 
+if ($config.repositories -is [array]) {
+    $repositories = $config.repositories
+} else {
+    $repositories = @()
+    $directories = Get-ChildItem -Directory -Path $config.repositories
+    foreach ($dir in $directories) {
+        $repo = @{
+            "location" = "$($config.repositories)\$dir"
+            "name" = $dir
+        }
+        $repositories += $repo
+    }
+}
+
 # Get diff for each repository
-foreach ($repository in $config.repositories) {
+foreach ($repository in $repositories) {
   $diff = git -C $repository.location log -p --all --author="$($config.author)" --after=$diffStartDateString --before=$diffEndDateString --full-diff
 
   if ($null -ne $diff) {
