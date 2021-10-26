@@ -1,6 +1,10 @@
 # NCSCopyMaker
 
-PowerShell script that generates code differences in Git repositories for specified deadlines (week by week). For now the current week is controlled by the property `backInTimeInWeeks` in the script configuration file. If you need to generate diffs for the past weeks, increase the value of this property. The code differences will be saved in the `diffs` folder or in the directory defined in the script configuration file.
+PowerShell script that generates code differences in Git repositories for specified deadlines (week by week).
+
+For now the current week is controlled by the property `backInTimeInWeeks` in the script configuration file. If you need to generate diffs for the past weeks, increase the value of this property. You can also override it by specifying the value as an argument.
+
+The code differences will be saved in the `diffs` folder or in the directory defined in the script configuration file.
 
 ## Script configuration
 
@@ -50,13 +54,23 @@ __NOTE:__ There are two ways to define repositories, but only one can be configu
 ### Repository object
 
 | **Property**       | **Type** | **Description**                           |
-|-------------------|----------|-------------------------------------------|
+|--------------------|----------|-------------------------------------------|
 | name     | string   | Name of the repository (reflected in code differences).  |
 | location | string   | Full path to the repository (note the double backslashes). |
 
 ## How to run
 
-Just create a proper `config.json` configuration file and run the script in the PowerShell console. 
+Just create the proper `config.json` configuration file in the script location and run the script in the PowerShell console:
+
+```lang-none
+./NCSCopyMaker.ps1
+```
+
+To override the property `backInTimeInWeeks`, provide the value as agrument:
+
+```lang-none
+./NCSCopyMaker.ps1 -backInTimeInWeeks 2
+```
 
 The code differences will be saved for each month in a separate folder called MM.yyyy, e.g. `12.2020` for December 2020. In each of the folders, you will find folders for repositories defined in the configuration file and inside you will find text files with the differences for each week, e.g. `week-48.txt`.
 

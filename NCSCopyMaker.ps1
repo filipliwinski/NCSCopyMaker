@@ -4,6 +4,10 @@
 # For debugging purposes, assign the base path in the PS Console:
 # $basePath = "<script location>"
 
+param (
+  [int] $backInTimeInWeeks
+)
+
 if ($PSScriptRoot -ne '') {
   $basePath = $PSScriptRoot
 }
@@ -13,7 +17,11 @@ if ($basePath -eq '') {
 }
 
 $config = Get-Content -Path "$basePath\config.json" | ConvertFrom-Json
-$currentDate = $(Get-Date).Date.AddDays( - (7 * $config.backInTimeInWeeks))
+if ($null -eq $backInTimeInWeeks) {
+  $backInTimeInWeeks = $config.backInTimeInWeeks
+}
+
+$currentDate = $(Get-Date).Date.AddDays( - (7 * $backInTimeInWeeks))
 
 $futureDeadlines = [ordered]@{}
 $pastDeadlines = [ordered]@{}
@@ -54,9 +62,6 @@ if ($($futureDeadlines.Values)[0] -lt $sunday) {
 else {
   $endDate = $sunday
 }
-
-#$startDate = $startDate.Date.AddDays(-(7 * $config.backInTimeInWeeks))
-#$endDate = $endDate.Date.AddDays(-(7 * $config.backInTimeInWeeks))
 
 $diffStartDateString = $startDate.AddDays(-1).Date.ToString("yyyy-MM-dd") # Git start date is one day after specified date
 $diffEndDateString = $endDate.Date.ToString("yyyy-MM-dd")
