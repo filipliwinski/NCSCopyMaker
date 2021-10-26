@@ -1,12 +1,13 @@
 # Filip Liwiński (c) 2021
 # https://github.com/filipliwinski/NCSCopyMaker
 
+param (
+  [int] $backInTimeInWeeks,
+  [bool] $debug = $false
+)
+
 # For debugging purposes, assign the base path in the PS Console:
 # $basePath = "<script location>"
-
-param (
-  [int] $backInTimeInWeeks
-)
 
 if ($PSScriptRoot -ne '') {
   $basePath = $PSScriptRoot
@@ -19,6 +20,9 @@ if ($basePath -eq '') {
 $config = Get-Content -Path "$basePath\config.json" | ConvertFrom-Json
 if ($null -eq $backInTimeInWeeks) {
   $backInTimeInWeeks = $config.backInTimeInWeeks
+}
+if ($null -eq $debug) {
+  $debug = $config.debug
 }
 
 $currentDate = $(Get-Date).Date.AddDays( - (7 * $backInTimeInWeeks))
@@ -87,7 +91,8 @@ $billingMonth = $($futureDeadlines.Values)[0].Month
 
 # Set and create output path
 $folderName = "$((Get-Date).Year).$($billingMonth)"
-$outputPath = "$basePath\diffs\$folderName"
+$diffsFolderName = if ($debu -eq $true) { "diffs" } else { "diffs-debug" } 
+$outputPath = "$basePath\$diffsFolderName\$folderName"
 if ($config.$outputDirectory) {
   $outputPath = $outputDirectory
 }
@@ -125,6 +130,6 @@ foreach ($repository in $repositories) {
 }
 
 if ($config.compress) {
-  Compress-Archive -Path "$basePath\diffs\$folderName" -DestinationPath "$basePath\diffs\$folderName.zip" -Force
+  Compress-Archive -Path "$basePath\$diffsFolderName\$folderName" -DestinationPath "$basePath\$diffsFolderName\$folderName.zip" -Force
   Write-Host "Compressed to: $folderName.zip"
 }
