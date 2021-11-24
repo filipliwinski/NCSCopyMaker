@@ -2,7 +2,7 @@
 # https://github.com/filipliwinski/NCSCopyMaker
 
 param (
-  [int] $backInTimeInWeeks,
+  [int] $backInTimeInWeeks = -1,
   [bool] $debug = $false
 )
 
@@ -18,7 +18,7 @@ if ($basePath -eq '') {
 }
 
 $config = Get-Content -Path "$basePath\config.json" | ConvertFrom-Json
-if ($null -eq $backInTimeInWeeks) {
+if (-1 -eq $backInTimeInWeeks) {
   $backInTimeInWeeks = $config.backInTimeInWeeks
 }
 if ($null -eq $debug) {
@@ -91,7 +91,7 @@ $billingMonth = $($futureDeadlines.Values)[0].Month
 
 # Set and create output path
 $folderName = "$((Get-Date).Year).$($billingMonth)"
-$diffsFolderName = if ($debu -eq $true) { "diffs" } else { "diffs-debug" } 
+$diffsFolderName = if ($debug -eq $false) { "diffs" } else { "diffs-debug" } 
 $outputPath = "$basePath\$diffsFolderName\$folderName"
 if ($config.$outputDirectory) {
   $outputPath = $outputDirectory
