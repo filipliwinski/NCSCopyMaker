@@ -105,8 +105,8 @@ if ($config.repositories -is [array]) {
     $directories = Get-ChildItem -Directory -Path $config.repositories
     foreach ($dir in $directories) {
         $repo = @{
-            "location" = "$($config.repositories)\$dir"
-            "name" = $dir
+            "location" = $dir.FullName
+            "name" = $dir.Name
         }
         $repositories += $repo
     }
