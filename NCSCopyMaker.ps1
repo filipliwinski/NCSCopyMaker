@@ -1,10 +1,12 @@
-# Filip Liwiński (c) 2021
+# Filip Liwiński (c) 2020-2024
 # https://github.com/filipliwinski/NCSCopyMaker
 
 param (
   [int] $backInTimeInWeeks = -1,
   [bool] $debug = $false
 )
+
+$ErrorActionPreference = "Stop"
 
 # For debugging purposes, assign the base path in the PS Console:
 # $basePath = "<script location>"
@@ -40,6 +42,11 @@ foreach ($deadline in $config.deadlines) {
   else {
     $futureDeadlines.Add(-$difference.Days, $date)
   }
+}
+
+# Validate pastDeadlines
+if ($pastDeadlines.Count -eq 0) {
+  throw "No deadline before the current date. Verify 'deadlines' entries in the config file."
 }
 
 # Find start day (Monday or past deadline + 1)

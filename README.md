@@ -48,7 +48,7 @@ This script requires a configuration JSON file to be present in the same directo
 | outputDirectory   | string         | Path to the directory for storing code differences. If no directory is specified, the script directory will be used. |
 | backInTimeInWeeks | int            | Positive number of weeks back for which you want to run the script. Default is 0 (the current week). |
 | debug             | bool           | If `true`, the folder containing diffs will be called `diffs-debug`. |
-| deadlines         | array          | Array of dates defining the deadlines in each month in `dd-MM-yyyy` format. |
+| deadlines         | array          | Array of dates defining the deadlines in each month in `dd-MM-yyyy` format. Must contain a date before the current date. |
 | repositories      | array / string | Array of objects defining the repositories to track or path to a folder containing the repositories. |
 
 __NOTE:__ There are two ways to define repositories, but only one can be configured at a time.
