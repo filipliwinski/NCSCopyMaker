@@ -1,5 +1,6 @@
 # Filip Liwiński (c) 2020-2024
 # https://github.com/filipliwinski/NCSCopyMaker
+$script:Version = "0.7.0-SNAPSHOT"
 
 param (
   [int] $backInTimeInWeeks = -1,
@@ -18,6 +19,8 @@ if ($PSScriptRoot -ne '') {
 if ($basePath -eq '') {
   throw "Base path not defined."
 }
+
+Write-Host "NCSCopyMaker v$script:Version"
 
 $config = Get-Content -Path "$basePath\config.json" | ConvertFrom-Json
 if (-1 -eq $backInTimeInWeeks) {
