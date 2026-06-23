@@ -4,6 +4,8 @@
 
 - Added version number to the script header, displayed on startup.
 - Introduced this changelog file to track release history.
+- Fixed folder year at year boundary.
+- Script now exits cleanly when no past deadline is found.
 
 ## 2024-09-01 — 0.6.0
 

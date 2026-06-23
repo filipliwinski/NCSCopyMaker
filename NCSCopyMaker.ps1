@@ -49,7 +49,8 @@ foreach ($deadline in $config.deadlines) {
 
 # Validate pastDeadlines
 if ($pastDeadlines.Count -eq 0) {
-  throw "No deadline before the current date. Verify 'deadlines' entries in the config file."
+  Write-Error "No deadline before the current date. Verify 'deadlines' entries in the config file."
+  exit 1
 }
 
 # Find start day (Monday or past deadline + 1)
@@ -100,7 +101,7 @@ Write-Host "Week number: $weekNumber"
 $billingMonth = $($futureDeadlines.Values)[0].Month
 
 # Set and create output path
-$folderName = "$((Get-Date).Year).$($billingMonth)"
+$folderName = "$($($futureDeadlines.Values)[0].Year).$($billingMonth)"
 $diffsFolderName = if ($debug -eq $false) { "diffs" } else { "diffs-debug" } 
 $outputPath = "$basePath\$diffsFolderName\$folderName"
 if ($config.$outputDirectory) {
