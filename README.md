@@ -43,12 +43,12 @@ This script requires a configuration JSON file to be present in the same directo
 
 | **Property**      | **Type**       | **Description**                               |
 |-------------------|----------------|-----------------------------------------------|
-| author            | string         | Name of the autor assigned in Git config to `username.email`.     |
+| author            | string         | Name of the author assigned in Git config to `username.email`.     |
 | compress          | bool           | If `true`, the folder containing diffs will be saved as zip archive. |
 | outputDirectory   | string         | Path to the directory for storing code differences. If no directory is specified, the script directory will be used. |
 | backInTimeInWeeks | int            | Positive number of weeks back for which you want to run the script. Default is 0 (the current week). |
 | debug             | bool           | If `true`, the folder containing diffs will be called `diffs-debug`. |
-| deadlines         | array          | Array of dates defining the deadlines in each month in `dd-MM-yyyy` format. Must contain a date before the current date. |
+| deadlines         | array          | Array of dates defining the deadlines in each month in `dd-MM-yyyy` format. Must contain at least one past and one future deadline. |
 | repositories      | array / string | Array of objects defining the repositories to track or path to a folder containing the repositories. |
 
 __NOTE:__ There are two ways to define repositories, but only one can be configured at a time.
@@ -68,7 +68,7 @@ Just create the proper `config.json` configuration file in the script location a
 ./NCSCopyMaker.ps1
 ```
 
-To override a property in the configuration file, provide the value as agrument:
+To override a property in the configuration file, provide the value as argument:
 
 ```lang-none
 ./NCSCopyMaker.ps1 -backInTimeInWeeks 2
@@ -79,10 +79,10 @@ Currently, the overridable properties are:
 * `backInTimeInWeeks`,
 * `debug`.
 
-The code differences will be saved for each month in a separate folder called MM.yyyy, e.g. `12.2020` for December 2020. In each of the folders, you will find folders for repositories defined in the configuration file and inside you will find text files with the differences for each week, e.g. `week-48.txt`.
+The code differences will be saved for each month in a separate folder called yyyy.MM, e.g. `2020.01` for January 2020. In each of the folders, you will find folders for repositories defined in the configuration file and inside you will find text files with the differences for each week, e.g. `week-2020-48.txt`.
 
 If the `compress` property is set to `true`, the content of the folder for the monthly diffs will be compressed into a zip archive.
 
-### Comming soon
+## Planned features
 
 * Excluding commits

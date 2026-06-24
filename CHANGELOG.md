@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2026-06-24 — 1.0.0
 
 - Added version number to the script header, displayed on startup.
 - Introduced this changelog file to track release history.
