@@ -137,7 +137,7 @@ foreach ($repository in $repositories) {
     Write-Host "Generating diffs for $startDateString - $endDateString in $($repository.name)..."
     $diffOutputPath = "$outputPath\$($repository.name)"
     New-Item -ItemType Directory -Force -Path $diffOutputPath | Out-Null
-    $outputFile = "$diffOutputPath\week-$weekNumber.txt"
+    $outputFile = "$diffOutputPath\week-$($endDate.Year)-$weekNumber.txt"
     $diff > $outputFile
     Write-Host "Saved to: $outputFile"
   }
