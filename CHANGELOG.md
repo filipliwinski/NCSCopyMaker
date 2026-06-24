@@ -4,8 +4,11 @@
 
 - Added version number to the script header, displayed on startup.
 - Introduced this changelog file to track release history.
-- Fixed folder year at year boundary.
+- Fixed folder year number at year boundary.
 - Script now exits cleanly when no past or future deadline is found.
+- Fixed week boundaries when `-backInTimeInWeeks` is used.
+- Fixed `outputDirectory` config option to create month-specific folders inside it.
+- Fixed compression step to work with custom `outputDirectory`.
 
 ## 2024-09-01 — 0.6.0
 

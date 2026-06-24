@@ -60,7 +60,7 @@ if ($futureDeadlines.Count -eq 0) {
 }
 
 # Find start day (Monday or past deadline + 1)
-$dayOfWeek = (Get-date).DayOfWeek.value__
+$dayOfWeek = $currentDate.DayOfWeek.value__
 if ($dayOfWeek -eq 0) {
   $dayOfWeek = 7
 }
@@ -110,8 +110,8 @@ $billingMonth = $($futureDeadlines.Values)[0].Month
 $folderName = "$($($futureDeadlines.Values)[0].Year).$($billingMonth)"
 $diffsFolderName = if ($debug -eq $false) { "diffs" } else { "diffs-debug" } 
 $outputPath = "$basePath\$diffsFolderName\$folderName"
-if ($config.$outputDirectory) {
-  $outputPath = $outputDirectory
+if ($config.outputDirectory) {
+  $outputPath = "$($config.outputDirectory.TrimEnd('\'))\$folderName"
 }
 New-Item -ItemType Directory -Force -Path $outputPath | Out-Null
 
@@ -147,6 +147,6 @@ foreach ($repository in $repositories) {
 }
 
 if ($config.compress) {
-  Compress-Archive -Path "$basePath\$diffsFolderName\$folderName" -DestinationPath "$basePath\$diffsFolderName\$folderName.zip" -Force
+  Compress-Archive -Path $outputPath -DestinationPath "$outputPath.zip" -Force
   Write-Host "Compressed to: $folderName.zip"
 }
