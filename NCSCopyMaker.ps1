@@ -107,7 +107,7 @@ Write-Host "Week number: $weekNumber"
 $billingMonth = $($futureDeadlines.Values)[0].Month
 
 # Set and create output path
-$folderName = "$($($futureDeadlines.Values)[0].Year).$($billingMonth)"
+$folderName = "$($($futureDeadlines.Values)[0].Year).$($billingMonth.ToString('D2'))"
 $diffsFolderName = if ($debug -eq $false) { "diffs" } else { "diffs-debug" } 
 $outputPath = "$basePath\$diffsFolderName\$folderName"
 if ($config.outputDirectory) {

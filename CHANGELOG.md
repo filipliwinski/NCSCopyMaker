@@ -5,6 +5,7 @@
 - Added version number to the script header, displayed on startup.
 - Introduced this changelog file to track release history.
 - Changed week and year number output filename at year boundary by prefixing with the year (e.g., `week-2026-52.txt`).
+- Folder name now uses a two-digit month (e.g., `2026.01` instead of `2026.1`).
 - Script now exits cleanly when no past or future deadline is found.
 - Fixed week boundaries when `-backInTimeInWeeks` is used.
 - Fixed `outputDirectory` config option to create month-specific folders inside it.
