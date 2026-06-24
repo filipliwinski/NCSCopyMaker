@@ -1,4 +1,4 @@
-# Filip Liwiński (c) 2020-2024
+# Filip Liwiński (c) 2020-2026
 # https://github.com/filipliwinski/NCSCopyMaker
 $script:Version = "0.7.0-SNAPSHOT"
 
