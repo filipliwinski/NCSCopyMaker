@@ -53,6 +53,12 @@ if ($pastDeadlines.Count -eq 0) {
   exit 1
 }
 
+# Validate futureDeadlines
+if ($futureDeadlines.Count -eq 0) {
+  Write-Error "No deadline on or after the current date. Verify 'deadlines' entries in the config file."
+  exit 1
+}
+
 # Find start day (Monday or past deadline + 1)
 $dayOfWeek = (Get-date).DayOfWeek.value__
 if ($dayOfWeek -eq 0) {
