@@ -1,6 +1,6 @@
 # Filip Liwiński (c) 2020-2026
 # https://github.com/filipliwinski/NCSCopyMaker
-$script:Version = "1.0.0"
+$script:Version = "1.1.0-SNAPSHOT"
 
 param (
   [int] $backInTimeInWeeks = -1,
